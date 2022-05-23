@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
-
+  LoginScreen({Key? key}) : super(key: key);
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,101 +15,155 @@ class LoginScreen extends StatelessWidget {
           ),
           SafeArea(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 32.0),
-                  child: Image.asset(
-                    'assets/logo.png',
-                    height: 64,
-                  ),
+                Image.asset(
+                  'assets/logo.png',
+                  height: 64,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 28.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Login',
-                        style: TextStyle(
-                          fontSize: 28.0,
-                          fontWeight: FontWeight.w700,
+                Form(
+                  key: _formKey,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 28.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Login',
+                          style: TextStyle(
+                            fontSize: 28.0,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        'Please sign in to continue',
-                        style: TextStyle(
-                          fontSize: 13.0,
-                          fontWeight: FontWeight.w600,
+                        const SizedBox(height: 8),
+                        const Text(
+                          'Please sign in to continue',
+                          style: TextStyle(
+                            fontSize: 13.0,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 32.0),
-                      const TextField(
-                        decoration: InputDecoration(
-                          border: UnderlineInputBorder(),
-                          contentPadding: EdgeInsets.only(
-                            bottom: 0,
-                          ),
-                          hintText: 'User ID',
-                          labelText: 'User ID',
-                          hintStyle: TextStyle(
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.w300,
-                            fontStyle: FontStyle.italic,
-                          ),
-                          labelStyle: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                          ),
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                        ),
-                      ),
-                      const SizedBox(height: 32.0),
-                      const TextField(
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          border: UnderlineInputBorder(),
-                          contentPadding: EdgeInsets.only(
-                            bottom: 0,
-                          ),
-                          hintText: 'Password',
-                          labelText: 'Password',
-                          hintStyle: TextStyle(
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.w300,
-                            fontStyle: FontStyle.italic,
-                          ),
-                          labelStyle: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                          ),
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                        ),
-                      ),
-                      const SizedBox(height: 28.0),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          child: const Text(
-                            'LOGIN',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.0,
+                        const SizedBox(height: 32.0),
+                        TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'User ID dan/atau password anda belum diisi';
+                            }
+                            return null;
+                          },
+                          decoration: const InputDecoration(
+                            border: UnderlineInputBorder(),
+                            contentPadding: EdgeInsets.only(
+                              bottom: 0,
                             ),
+                            hintText: 'User ID',
+                            labelText: 'User ID',
+                            hintStyle: TextStyle(
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.w300,
+                              fontStyle: FontStyle.italic,
+                            ),
+                            labelStyle: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                            ),
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
                           ),
-                          style: ElevatedButton.styleFrom(
-                              elevation: 0,
-                              fixedSize: const Size(160, 48),
-                              shape: const StadiumBorder(),
-                              primary: const Color(0xFF6338a1)),
                         ),
-                      )
-                    ],
+                        const SizedBox(height: 32.0),
+                        TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'User ID dan/atau password anda belum diisi';
+                            }
+                            return null;
+                          },
+                          obscureText: true,
+                          decoration: const InputDecoration(
+                            border: UnderlineInputBorder(),
+                            contentPadding: EdgeInsets.only(
+                              bottom: 0,
+                            ),
+                            hintText: 'Password',
+                            labelText: 'Password',
+                            hintStyle: TextStyle(
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.w300,
+                              fontStyle: FontStyle.italic,
+                            ),
+                            labelStyle: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                            ),
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                          ),
+                        ),
+                        const SizedBox(height: 28.0),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              if (!_formKey.currentState!.validate()) {
+                                await showDialog<void>(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(12.0)),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Image.asset(
+                                          'assets/error-sign.png',
+                                          height: 64,
+                                        ),
+                                        const SizedBox(height: 12.0),
+                                        const Text(
+                                          'User ID dan/atau Password belum diisi',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    actionsAlignment: MainAxisAlignment.center,
+                                    actions: [
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('OK'),
+                                        style: ElevatedButton.styleFrom(
+                                          shape: const StadiumBorder(),
+                                          primary: const Color(0xFF6338a1),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              }
+                            },
+                            child: const Text(
+                              'LOGIN',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                                elevation: 0,
+                                fixedSize: const Size(160, 48),
+                                shape: const StadiumBorder(),
+                                primary: const Color(0xFF6338a1)),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 Row(
